@@ -3,36 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melih Yavuk | Portfolio</title>
+    <title>Melih Yavuk | Ev Hazırlığı</title>
     <style>
+        /* Hareketli Renk Geçişi Arka Planı */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         :root {
-            --bg-color: #0d1117;
-            --text-color: #c9d1d9;
-            --accent-color: #58a6ff;
-            --card-bg: #161b22;
+            --accent-color: #00d2ff;
+            --secondary-color: #3a7bd5;
+            --card-bg: rgba(22, 27, 34, 0.9);
+            --border-glow: rgba(0, 210, 255, 0.3);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100-vh;
-            text-align: center;
+            min-height: 100vh;
+            color: #f0f6fc;
+            background: linear-gradient(-45deg, #0d1117, #161b22, #002347, #0d1117);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
         }
 
         .container {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #30363d;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            max-width: 400px;
+            max-width: 850px;
             width: 90%;
-            margin: 20px;
+            margin: 40px auto;
+            z-index: 1;
+        }
+
+        /* Profil Kartı ve Parlama Efekti */
+        header {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px var(--border-glow);
+            margin-bottom: 30px;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
         .profile-img {
@@ -41,66 +65,120 @@
             border-radius: 50%;
             border: 3px solid var(--accent-color);
             object-fit: cover;
-            margin-bottom: 1rem;
-            background-color: #21262d;
+            box-shadow: 0 0 15px var(--accent-color);
+            transition: transform 0.3s ease;
         }
 
-        h1 {
-            margin: 0.5rem 0;
-            color: white;
-            font-size: 1.8rem;
+        .profile-img:hover {
+            transform: scale(1.05) rotate(3deg);
         }
 
-        p {
-            color: #8b949e;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #238636;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn:hover {
-            background-color: #2ea043;
-        }
-
-        .links {
-            margin-top: 1.5rem;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .links a {
+        h1 { margin: 10px 0 5px; font-size: 2.5rem; letter-spacing: 1px; }
+        .app-tag {
             color: var(--accent-color);
-            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
             font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* Hareketli ve Parlak Butonlar */
+        .btn-glow {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background: #238636;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            overflow: hidden;
+            transition: 0.3s;
+            margin-top: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-glow:hover::before { left: 100%; }
+        .btn-glow:hover { box-shadow: 0 0 20px #238636; transform: translateY(-3px); }
+
+        /* İçerik Alanı */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--accent-color); }
+
+        .chart-img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid #30363d;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="profil.jpg" alt="Melih Yavuk" class="profile-img">
-        
-        <h1>Melih Yavuk</h1>
-        <p>Minecraft Mod Geliştiricisi & Tasarımcı</p>
-        
-        <a href="https://github.com/melihyavuk" class="btn">GitHub'da Takip Et</a>
+        <header>
+            <div class="profile-wrapper">
+                <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
+            </div>
+            <h1>Melih Yavuk</h1>
+            <div class="app-tag">Uygulama: Ev Hazırlığı</div>
+            
+            <a href="veri.csv" class="btn-glow" download>
+                📥 VERİ SETİNİ İNDİR (CSV)
+            </a>
+        </header>
 
-        <div class="links">
-            <a href="#">Projeler</a>
-            <a href="#">İletişim</a>
-            <a href="#">Hakkımda</a>
+        <div class="grid">
+            <div class="card">
+                <h3>Analiz Özeti</h3>
+                <p>Bu proje, 4. hafta kapsamında <strong>Ev Hazırlığı</strong> verilerinin işlenmesi ve görselleştirilmesi amacıyla geliştirilmiştir.</p>
+            </div>
+
+            <div class="card">
+                <h3>Veri Grafiği</h3>
+                <img src="grafik.png" alt="Grafik Çıktısı" class="chart-img">
+            </div>
         </div>
+
+        <footer>
+            <p>© 2026 Melih Yavuk | GitHub Pages Portfolio</p>
+        </footer>
     </div>
 
 </body>
