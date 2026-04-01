@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melih Yavuk | Ev Hazırlığı</title>
+    <title>Melih Yavuk | Ev Hazırlığı Portfolyosu</title>
     <style>
-        /* Hareketli Renk Geçişi Arka Planı */
+        /* Animasyonlu Arka Plan */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -13,171 +13,161 @@
         }
 
         :root {
-            --accent-color: #00d2ff;
-            --secondary-color: #3a7bd5;
-            --card-bg: rgba(22, 27, 34, 0.9);
-            --border-glow: rgba(0, 210, 255, 0.3);
+            --accent: #00d2ff;
+            --card-bg: rgba(22, 27, 34, 0.85);
+            --border: #30363d;
+            --glow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
             color: #f0f6fc;
-            background: linear-gradient(-45deg, #0d1117, #161b22, #002347, #0d1117);
+            background: linear-gradient(-45deg, #0d1117, #161b22, #001f3f, #0d1117);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            overflow-x: hidden;
+            animation: gradientBG 12s ease infinite;
         }
 
         .container {
-            max-width: 850px;
+            max-width: 900px;
             width: 90%;
-            margin: 40px auto;
-            z-index: 1;
+            margin: 50px 0;
         }
 
-        /* Profil Kartı ve Parlama Efekti */
+        /* Profil ve Başlık */
         header {
             background: var(--card-bg);
-            border: 1px solid #30363d;
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 40px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px var(--border-glow);
+            backdrop-filter: blur(8px);
+            box-shadow: var(--glow);
             margin-bottom: 30px;
         }
 
-        .profile-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 3px solid var(--accent-color);
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px var(--accent);
             object-fit: cover;
-            box-shadow: 0 0 15px var(--accent-color);
-            transition: transform 0.3s ease;
+            transition: 0.4s;
+            cursor: pointer;
         }
 
-        .profile-img:hover {
-            transform: scale(1.05) rotate(3deg);
-        }
+        .profile-img:hover { transform: scale(1.1) rotate(5deg); }
 
-        h1 { margin: 10px 0 5px; font-size: 2.5rem; letter-spacing: 1px; }
-        .app-tag {
-            color: var(--accent-color);
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
+        h1 { margin: 15px 0 5px; font-size: 2.4rem; color: white; }
+        .app-name { color: var(--accent); letter-spacing: 2px; font-weight: bold; font-size: 1rem; }
 
         /* Hareketli ve Parlak Butonlar */
-        .btn-glow {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
+        .button-grid {
+            display: flex;
+            gap: 15px;
             justify-content: center;
-            padding: 15px 30px;
-            background: #238636;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            overflow: hidden;
-            transition: 0.3s;
-            margin-top: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            margin-top: 25px;
         }
 
-        .btn-glow::before {
+        .nav-btn {
+            position: relative;
+            padding: 12px 25px;
+            background: #21262d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        /* Parlama Çubuğu Efekti */
+        .nav-btn::after {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            top: -50%; left: -60%;
+            width: 20%; height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
             transition: 0.5s;
         }
 
-        .btn-glow:hover::before { left: 100%; }
-        .btn-glow:hover { box-shadow: 0 0 20px #238636; transform: translateY(-3px); }
+        .nav-btn:hover::after { left: 120%; }
+        .nav-btn:hover { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); background: #30363d; }
 
-        /* İçerik Alanı */
+        /* İçerik Kartları */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
         }
 
         .card {
             background: var(--card-bg);
-            border: 1px solid #30363d;
+            border: 1px solid var(--border);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .card h3 { border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; }
+
+        .preview-img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
             transition: 0.3s;
         }
 
-        .card:hover { border-color: var(--accent-color); }
+        .preview-img:hover { opacity: 0.8; transform: translateY(-3px); }
 
-        .chart-img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-top: 15px;
-            border: 1px solid #30363d;
-        }
+        footer { text-align: center; margin-top: 40px; opacity: 0.5; font-size: 0.8rem; padding-bottom: 20px; }
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <div class="profile-wrapper">
-                <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
-            </div>
+            <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
             <h1>Melih Yavuk</h1>
-            <div class="app-tag">Uygulama: Ev Hazırlığı</div>
+            <div class="app-name">Uygulama: Ev Hazırlığı</div>
             
-            <a href="veri.csv" class="btn-glow" download>
-                📥 VERİ SETİNİ İNDİR (CSV)
-            </a>
+            <div class="button-grid">
+                <a href="veri.csv" target="_blank" class="nav-btn">📊 Veri Setini Görüntüle</a>
+                <a href="ev-hazirligi.html" target="_blank" class="nav-btn">🏠 Ev Hazırlığı Sayfası</a>
+                <a href="https://github.com/melihyavuk" target="_blank" class="nav-btn">💻 GitHub Profilim</a>
+            </div>
         </header>
 
         <div class="grid">
             <div class="card">
-                <h3>Analiz Özeti</h3>
-                <p>Bu proje, 4. hafta kapsamında <strong>Ev Hazırlığı</strong> verilerinin işlenmesi ve görselleştirilmesi amacıyla geliştirilmiştir.</p>
+                <h3>Analiz Verileri</h3>
+                <p>Uygulama kapsamında toplanan veriler <strong>veri.csv</strong> dosyasında saklanmaktadır. Yukarıdaki butondan tüm datayı inceleyebilirsiniz.</p>
             </div>
 
             <div class="card">
-                <h3>Veri Grafiği</h3>
-                <img src="grafik.png" alt="Grafik Çıktısı" class="chart-img">
+                <h3>Grafik Çıktısı</h3>
+                <a href="grafik.png" target="_blank">
+                    <img src="grafik.png" alt="Grafik" class="preview-img">
+                </a>
+                <p style="font-size: 0.8rem; margin-top: 10px; color: #8b949e;">(Büyütmek için görsele tıkla)</p>
             </div>
         </div>
 
         <footer>
-            <p>© 2026 Melih Yavuk | GitHub Pages Portfolio</p>
+            <p>© 2026 Melih Yavuk | Tüm Hakları Saklıdır.</p>
         </footer>
     </div>
 
