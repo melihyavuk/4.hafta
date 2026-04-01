@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolyo | Dinamik Tasarım</title>
+    <style>
+        /* Arka Plan Renk Geçişi Efekti */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: none; /* Özel imleç için varsayılanı gizledik */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* İçerik Kutusu */
+        .container {
+            text-align: center;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        h1 { font-size: 3rem; margin-bottom: 10px; }
+        p { font-size: 1.2rem; opacity: 0.8; }
+
+        /* Mouse Takip Eden Kuyruk (Trail) */
+        .trail {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            z-index: 9999;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Merhaba, Ben [Adınız]</h1>
+        <p>Yaratıcı Portfolyo ve Projelerim</p>
+    </div>
+
+    <script>
+        const dots = [];
+        const cursor = document.createElement('div');
+        cursor.classList.add('trail');
+        document.body.appendChild(cursor);
+
+        // Kuyruk için noktalar oluşturma
+        for (let i = 0; i < 15; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            document.body.appendChild(dot);
+            dots.push(dot);
+        }
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Ana imleç takibi
+            cursor.style.left = mouseX - 10 + 'px';
+            cursor.style.top = mouseY - 10 + 'px';
+        });
+
+        // Kuyruk efekti animasyonu
+        function animate() {
+            let x = mouseX;
+            let y = mouseY;
+
+            dots.forEach((dot, index) => {
+                const nextDot = dots[index + 1] || { x: mouseX, y: mouseY };
+                
+                // Noktaların birbirini takip etmesi için gecikmeli pozisyon
+                dot.x = x;
+                dot.y = y;
+                
+                dot.style.left = x - 4 + 'px';
+                dot.style.top = y - 4 + 'px';
+
+                // Her bir nokta bir sonrakine doğru süzülür
+                x += (nextDot.x - x) * 0.3;
+                y += (nextDot.y - y) * 0.3;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
