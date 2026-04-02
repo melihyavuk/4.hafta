@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melih Yavuk | 4. Hafta Portfolyosu</title>
     <style>
-        /* Modern ve Koyu Tema Renk Değişkenleri */
         :root {
-            --accent: #00d2ff; /* Mavi Neon */
-            --secondary: #3a7bd5; /* Daha Koyu Mavi */
+            --accent: #00d2ff;
             --card-bg: rgba(22, 27, 34, 0.9);
-            --border-glow: rgba(0, 210, 255, 0.3);
+            --border: #30363d;
             --text-main: #f0f6fc;
-            --text-secondary: #8b949e;
         }
 
-        /* Arka Plan ve Animasyon */
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
@@ -24,165 +20,88 @@
             justify-content: center;
             min-height: 100vh;
             color: var(--text-main);
-            /* Başlangıç Arka Planı */
             background: linear-gradient(-45deg, #0d1117, #161b22, #001f3f, #0d1117);
             background-size: 400% 400%;
-            transition: background 1s ease-out; /* Mause hareketine akıcı geçiş */
+            transition: background 0.1s ease;
             overflow-x: hidden;
         }
 
-        /* Mekik Hareketi İçin Arka Plan Animasyonu */
-        @keyframes mekikMovement {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        .container { max-width: 900px; width: 90%; margin: 50px auto; }
 
-        .container {
-            max-width: 900px;
-            width: 90%;
-            margin: 50px auto;
-            z-index: 1;
-        }
-
-        /* Profil ve Başlık Alanı */
         header {
             background: var(--card-bg);
-            border: 1px solid #30363d;
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 40px;
             text-align: center;
             backdrop-filter: blur(12px);
-            box-shadow: 0 0 20px var(--border-glow);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
             margin-bottom: 30px;
         }
 
-        .profile-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 150px; height: 150px;
             border-radius: 50%;
             border: 3px solid var(--accent);
             box-shadow: 0 0 15px var(--accent);
             object-fit: cover;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            cursor: pointer;
+            transition: 0.4s;
         }
 
-        .profile-img:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 30px var(--accent);
-        }
+        h1 { margin: 15px 0 5px; font-size: 2.5rem; }
+        .app-tag { color: var(--accent); font-weight: bold; letter-spacing: 2px; }
 
-        h1 { margin: 10px 0 5px; font-size: 2.5rem; letter-spacing: 1px; color: white; }
-        .app-name { color: var(--accent); letter-spacing: 2px; font-weight: bold; font-size: 1rem; text-transform: uppercase; }
-
-        /* Hareketli Işık Süzmesi Butonları */
-        .button-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
-        .nav-btn {
-            position: relative;
-            padding: 12px 25px;
-            background: #21262d;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            border: 1px solid #30363d;
-            font-weight: 600;
-            overflow: hidden;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .nav-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -60%;
-            width: 25%; height: 200%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(30deg);
-            transition: 0.6s;
-        }
-
-        .nav-btn:hover::after { left: 120%; }
-        .nav-btn:hover { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); background: #30363d; }
-
-        /* Parlayan Ana Buton */
         .show-btn {
             background: #238636;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
             margin-top: 25px;
-            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.4);
+            box-shadow: 0 0 15px rgba(35, 134, 54, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        .show-btn:hover { background: #2ea043; transform: scale(1.05); }
+        .show-btn::after {
+            content: ''; position: absolute; top: -50%; left: -60%;
+            width: 20%; height: 200%; background: rgba(255,255,255,0.2);
+            transform: rotate(30deg); transition: 0.5s;
+        }
+        .show-btn:hover::after { left: 120%; }
 
-        /* Gizli İçerik Alanı */
+        /* İçerik Alanı */
         #content-area {
-            display: none; /* Başlangıçta gizli */
-            animation: fadeIn 0.8s ease forwards;
+            display: none; /* JS ile açılacak */
+            animation: slideUp 0.5s ease-out forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* İçerik Kartları */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #30363d;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .card h3 { border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-top: 0; color: white; }
-
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-align: center; }
+        
         .chart-img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-top: 15px;
-            border: 2px solid var(--accent);
+            max-width: 100%; border-radius: 10px; border: 2px solid var(--accent);
             box-shadow: 0 0 15px var(--accent);
-            cursor: pointer;
-            transition: 0.3s;
         }
 
-        .chart-img:hover { opacity: 0.8; transform: translateY(-3px); }
-
-        /* Tablo Alanı */
         .table-wrapper {
-            margin-top: 30px;
-            background: var(--card-bg);
-            border: 1px solid #30363d;
-            border-radius: 15px;
-            padding: 20px;
-            overflow-x: auto;
+            margin-top: 30px; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 15px; padding: 20px; overflow-x: auto;
         }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; color: var(--text-main); }
-        th, td { border: 1px solid #30363d; padding: 12px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
         th { background: #161b22; color: var(--accent); }
 
-        footer { text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.8rem; padding-bottom: 20px; }
+        footer { text-align: center; margin-top: 50px; opacity: 0.5; padding-bottom: 20px; }
 
         @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
     </style>
@@ -191,90 +110,72 @@
 
     <div class="container">
         <header>
-            <div class="profile-wrapper">
-                <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
-            </div>
+            <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
             <h1>Melih Yavuk</h1>
-            <div class="app-name">Uygulama: Ev Hazırlığı (4. Hafta)</div>
+            <div class="app-tag">Uygulama: Ev Hazırlığı</div>
             
-            <div class="button-grid">
-                <button class="nav-btn show-btn" onclick="toggleContent()">📊 VERİ SETİNİ VE GRAFİĞİ GÖSTER</button>
-            </div>
-            <div class="button-grid">
-                <a href="veri.csv" target="_blank" class="nav-btn">💾 CSV İndir</a>
-                <a href="https://github.com/melihyavuk/4.hafta" target="_blank" class="nav-btn">💻 GitHub Deposu</a>
-            </div>
+            <button class="show-btn" onclick="toggleDisplay()">🚀 VERİLERİ VE GRAFİĞİ GÖSTER</button>
         </header>
 
         <div id="content-area">
             <div class="grid">
                 <div class="card">
-                    <h3>Proje Detayı</h3>
-                    <p>Melih Yavuk tarafından 4. hafta kapsamında geliştirilen Ev Hazırlığı projesine ait analiz sonuçları ve görselleştirilmiş veriler yanda yer almaktadır. Ham verileri aşağıda tablo halinde inceleyebilirsiniz.</p>
+                    <h3>Proje Grafiği</h3>
+                    <img src="grafik.png" alt="Grafik" class="chart-img">
                 </div>
                 <div class="card">
-                    <h3>Proje Grafiği</h3>
-                    <a href="grafik.png" target="_blank">
-                        <img src="grafik.png" alt="Grafik" class="chart-img">
-                    </a>
-                    <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-secondary);"> (Tam boy görmek için tıkla)</p>
+                    <h3>Detaylar</h3>
+                    <p>4. Hafta projesi kapsamında hazırlanan veriler ve görsel analizler yandadır.</p>
                 </div>
             </div>
 
             <div class="table-wrapper">
-                <h3>Ham Veri Seti (Tablo)</h3>
-                <p style="font-size: 0.9rem; color: var(--text-secondary);"> (Veriler 'veri.csv' dosyasından otomatik olarak okunmaktadır)</p>
-                <div id="csv-table">Veriler yükleniyor...</div>
+                <h3>Veri Seti (CSV)</h3>
+                <div id="table-output">Yükleniyor...</div>
             </div>
         </div>
 
-        <footer>
-            <p>© 2026 Melih Yavuk | Tüm Hakları Saklıdır.</p>
-        </footer>
+        <footer>© 2026 Melih Yavuk</footer>
     </div>
 
     <script>
-        // Mause Hareketine Göre Mekik Efekti
-        document.body.addEventListener('mousemove', function(e) {
-            const x = e.clientX;
-            const y = e.clientY;
-            const moveX = (x / window.innerWidth - 0.5) * 4; // Mekik hareketi şiddeti
-            const moveY = (y / window.innerHeight - 0.5) * 4;
-
-            document.body.style.backgroundPosition = `calc(0% + ${moveX}%) calc(50% + ${moveY}%)`;
+        // Mause Hareketi (Mekik Efekti)
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX / window.innerWidth - 0.5) * 5;
+            const moveY = (e.clientY / window.innerHeight - 0.5) * 5;
+            document.body.style.backgroundPosition = `${50 + moveX}% ${50 + moveY}%`;
         });
 
-        // Tıkla ve Göster Fonksiyonu
-        function toggleContent() {
-            const content = document.getElementById('content-area');
-            content.style.display = 'block';
-            content.scrollIntoView({ behavior: 'smooth' });
+        // Buton Fonksiyonu
+        function toggleDisplay() {
+            const area = document.getElementById('content-area');
+            area.style.display = 'block';
+            area.scrollIntoView({ behavior: 'smooth' });
 
-            // CSV Verisini Çekme ve Tabloya Dönüştürme
+            // CSV Verisini Çekme
             fetch('veri.csv')
-                .then(res => res.text())
-                .then(data => {
-                    const rows = data.split('\n');
-                    let tableHTML = '<table>';
+                .then(res => {
+                    if(!res.ok) throw new Error("Dosya bulunamadı");
+                    return res.text();
+                })
+                .then(text => {
+                    const rows = text.trim().split('\n');
+                    let html = '<table>';
                     rows.forEach((row, i) => {
                         const cols = row.split(',');
-                        if (cols.length > 1) { // Boş satırları atla
-                            tableHTML += '<tr>';
-                            cols.forEach(col => {
-                                tableHTML += i === 0 ? `<th>${col}</th>` : `<td>${col}</td>`;
-                            });
-                            tableHTML += '</tr>';
-                        }
+                        html += '<tr>';
+                        cols.forEach(col => {
+                            html += i === 0 ? `<th>${col}</th>` : `<td>${col}</td>`;
+                        });
+                        html += '</tr>';
                     });
-                    tableHTML += '</table>';
-                    document.getElementById('csv-table').innerHTML = tableHTML;
+                    html += '</table>';
+                    document.getElementById('table-output').innerHTML = html;
                 })
-                .catch(() => {
-                    document.getElementById('csv-table').innerHTML = "Veri dosyası (veri.csv) bulunamadı. Lütfen dosyanın deponuzda olduğundan emin olun.";
+                .catch(err => {
+                    document.getElementById('table-output').innerHTML = "Veri dosyası (veri.csv) okunamadı. Lütfen GitHub'da dosyanın mevcut olduğundan emin olun.";
                 });
         }
     </script>
-
 </body>
 </html>
-
