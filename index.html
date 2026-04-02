@@ -3,69 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melih Yavuk | Uzay Portfolyo</title>
+    <title>Melih Yavuk | Uzay Veri Sistemi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --accent: #00d2ff;
-            --card-bg: rgba(13, 17, 23, 0.9);
-            --border: rgba(48, 54, 61, 1);
+            --card-bg: rgba(10, 15, 25, 0.9);
+            --border: rgba(0, 210, 255, 0.3);
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             font-family: 'Segoe UI', sans-serif; color: white;
-            background: #05080a; overflow-x: hidden;
+            background: #020508; overflow-x: hidden;
         }
 
-        /* Uzay Arka Planı */
+        /* UZAY ARKA PLANI */
         #space-canvas { position: fixed; top: 0; left: 0; z-index: 0; }
 
         .container {
-            position: relative; z-index: 2; max-width: 900px;
-            margin: 50px auto; padding: 20px;
+            position: relative; z-index: 2; max-width: 1000px;
+            margin: 40px auto; padding: 20px;
         }
 
         header {
             background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 25px; padding: 40px; text-align: center;
-            backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
+            border-radius: 25px; padding: 35px; text-align: center;
+            backdrop-filter: blur(10px); box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
         }
 
         .profile-img {
-            width: 130px; height: 130px; border-radius: 50%;
+            width: 120px; height: 120px; border-radius: 50%;
             border: 3px solid var(--accent); box-shadow: 0 0 20px var(--accent);
-            margin-bottom: 15px;
+            margin-bottom: 15px; transition: 0.5s;
         }
 
         .btn-group {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px; margin-top: 30px;
+            gap: 15px; margin-top: 25px;
         }
 
         .btn {
             padding: 15px; border: none; border-radius: 12px;
             font-weight: bold; cursor: pointer; color: white;
             transition: 0.3s; text-decoration: none; text-align: center;
+            text-transform: uppercase; font-size: 0.85rem;
         }
 
         .btn-github { background: #6e5494; }
         .btn-game { background: #f39c12; }
-        .btn-data { background: #238636; }
+        .btn-data { background: #238636; box-shadow: 0 0 15px rgba(35, 134, 54, 0.4); }
         .btn:hover { transform: translateY(-3px); filter: brightness(1.2); }
 
         .panel {
             display: none; background: var(--card-bg); border: 1px solid var(--border);
             border-radius: 20px; padding: 25px; margin-top: 25px;
-            animation: fadeIn 0.6s ease;
+            animation: fadeIn 0.6s ease; backdrop-filter: blur(15px);
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .chart-box { height: 300px; width: 100%; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
-        th { color: var(--accent); background: #161b22; }
+        .chart-box { height: 400px; width: 100%; margin-top: 20px; }
+        
+        .table-wrapper {
+            max-height: 400px; overflow-y: auto; margin-top: 20px;
+            border: 1px solid var(--border); border-radius: 10px;
+        }
+
+        table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.4); }
+        th, td { border: 1px solid #1f2937; padding: 12px; text-align: left; }
+        th { color: var(--accent); background: #0d1117; position: sticky; top: 0; }
+        tr:hover { background: rgba(0, 210, 255, 0.05); }
+
     </style>
 </head>
 <body>
@@ -76,32 +85,37 @@
         <header>
             <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
             <h1>Melih Yavuk</h1>
-            <p style="color: var(--accent);">UZAY SİSTEMİ VERİ MERKEZİ</p>
+            <p style="color: var(--accent); letter-spacing: 3px; font-weight: bold;">VERİ ANALİZ SİSTEMİ</p>
 
             <div class="btn-group">
-                <a href="https://github.com/melihyavuk" target="_blank" class="btn btn-github">🐙 GitHub Profil</a>
-                <button onclick="togglePanel('game-panel')" class="btn btn-game">🎮 Ev Hazırlığı Oyunu</button>
-                <button onclick="initDataSystem()" class="btn btn-data">📊 Veri & Grafikler</button>
+                <a href="https://github.com/melihyavuk" target="_blank" class="btn btn-github">🐙 GitHub Profilim</a>
+                <button onclick="showPanel('game-panel')" class="btn btn-game">🎮 Ev Hazırlığı Oyunu</button>
+                <button onclick="processData()" class="btn btn-data">📊 Verileri Analiz Et</button>
             </div>
         </header>
 
         <div id="game-panel" class="panel">
             <h2>🏠 Ev Hazırlığı Projesi</h2>
-            <p>Proje dosyasına ulaşmak için tıklayın:</p>
-            <a href="ev-hazirligi.html" class="btn btn-game" style="display:inline-block">Oyunu Başlat</a>
+            <p>Oyun dünyasına giriş yapmak ve hazırlıkları tamamlamak için butona tıklayın:</p>
+            <a href="ev-hazirligi.html" class="btn btn-game" style="display:inline-block; width: 200px;">Oyuna Git ➔</a>
         </div>
 
         <div id="data-panel" class="panel">
-            <h2>📊 Analiz Sonuçları</h2>
+            <h2>📊 data.csv Performans Analizi</h2>
+            <p id="data-info">Veriler taranıyor...</p>
+            
             <div class="chart-box">
-                <canvas id="myChart"></canvas>
+                <canvas id="performanceChart"></canvas>
             </div>
-            <div id="table-output" style="overflow-x: auto;"></div>
+
+            <div class="table-wrapper">
+                <div id="table-output"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- GEOMETRİK UZAY ARKA PLANI ---
+        // --- UZAY ARKA PLANI (Geometrik Şekiller) ---
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         let shapes = [];
@@ -115,79 +129,103 @@
             init() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 15 + 5;
-                this.vX = (Math.random() - 0.5) * 0.5;
-                this.vY = (Math.random() - 0.5) * 0.5;
-                this.type = Math.floor(Math.random() * 3);
+                this.size = Math.random() * 12 + 4;
+                this.vX = (Math.random() - 0.5) * 0.4;
+                this.vY = (Math.random() - 0.5) * 0.4;
+                this.type = Math.floor(Math.random() * 3); // Daire, Kare, Üçgen
             }
             draw() {
-                ctx.strokeStyle = "rgba(0, 210, 255, 0.3)";
+                ctx.strokeStyle = "rgba(0, 210, 255, 0.25)";
                 ctx.beginPath();
                 if(this.type === 0) ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                else if(this.type === 1) ctx.rect(this.x, this.y, this.size, this.size);
-                else { ctx.moveTo(this.x, this.y); ctx.lineTo(this.x+this.size, this.y+this.size); ctx.lineTo(this.x-this.size, this.y+this.size); ctx.closePath(); }
+                else if(this.type === 1) ctx.rect(this.x-this.size/2, this.y-this.size/2, this.size, this.size);
+                else {
+                    ctx.moveTo(this.x, this.y - this.size);
+                    ctx.lineTo(this.x + this.size, this.y + this.size);
+                    ctx.lineTo(this.x - this.size, this.y + this.size);
+                    ctx.closePath();
+                }
                 ctx.stroke();
                 this.x += this.vX; this.y += this.vY;
                 if(this.x<0 || this.x>canvas.width || this.y<0 || this.y>canvas.height) this.init();
             }
         }
-        for(let i=0; i<30; i++) shapes.push(new Shape());
+        for(let i=0; i<40; i++) shapes.push(new Shape());
         function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); shapes.forEach(s=>s.draw()); requestAnimationFrame(animate); }
         animate();
 
-        // --- VERİ SİSTEMİ ---
-        function togglePanel(id) {
-            document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
-            document.getElementById(id).style.display='block';
+        // --- PANEL KONTROLÜ ---
+        function showPanel(id) {
+            document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        async function initDataSystem() {
-            togglePanel('data-panel');
-            
-            // CSV Verisi (Buradaki veriyi kendi verilerine göre değiştirebilirsin)
-            let rawData = "Kategori,Deger\nMutfak,85\nSalon,92\nBanyo,70\nBahce,60\nAntre,45";
+        // --- VERİ İŞLEME (data.csv) ---
+        async function processData() {
+            showPanel('data-panel');
+            const info = document.getElementById('data-info');
+            const output = document.getElementById('table-output');
 
-            // Önce dosyadan çekmeyi dene
             try {
-                const res = await fetch('vori.csv');
-                if (res.ok) rawData = await res.text();
-            } catch(e) { console.log("Dosya bulunamadı, yedek veri yükleniyor."); }
+                const response = await fetch('data.csv');
+                if (!response.ok) throw new Error("Dosya bulunamadı");
+                const csvData = await response.text();
+                
+                const rows = csvData.trim().split('\n');
+                const labels = [];
+                const scores = [];
+                let tableHtml = '<table>';
 
-            const rows = rawData.trim().split('\n');
-            const labels = [];
-            const values = [];
-            let table = '<table>';
+                rows.forEach((row, i) => {
+                    const cols = row.split(',');
+                    tableHtml += '<tr>';
+                    cols.forEach(c => tableHtml += i === 0 ? `<th>${c}</th>` : `<td>${c}</td>`);
+                    tableHtml += '</tr>';
 
-            rows.forEach((r, i) => {
-                const cols = r.split(',');
-                table += '<tr>' + cols.map(c => i === 0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('') + '</tr>';
-                if (i > 0 && cols.length > 1) {
-                    labels.push(cols[0]);
-                    values.push(parseFloat(cols[1]) || 0);
-                }
-            });
+                    // Grafik için ilk 50 veriyi alalım (çok kalabalık olmasın diye)
+                    if (i > 0 && i <= 50) {
+                        labels.push("ID " + cols[0]);
+                        scores.push(parseFloat(cols[1]));
+                    }
+                });
 
-            document.getElementById('table-output').innerHTML = table + '</table>';
+                output.innerHTML = tableHtml + '</table>';
+                info.innerHTML = `Toplam <b>${rows.length - 1}</b> kayıt başarıyla analiz edildi.`;
 
-            const ctxChart = document.getElementById('myChart').getContext('2d');
-            if (window.chart) window.chart.destroy();
-            window.chart = new Chart(ctxChart, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Hazırlık Puanı',
-                        data: values,
-                        backgroundColor: 'rgba(0, 210, 255, 0.5)',
-                        borderColor: '#00d2ff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, ticks: {color: '#fff'} }, x: { ticks: {color: '#fff'} } }
-                }
-            });
+                // Chart.js Grafiği
+                const chartCtx = document.getElementById('performanceChart').getContext('2d');
+                if (window.myChart) window.myChart.destroy();
+                window.myChart = new Chart(chartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Performans Puanı',
+                            data: scores,
+                            borderColor: '#00d2ff',
+                            backgroundColor: 'rgba(0, 210, 255, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { grid: { color: '#1f2937' }, ticks: { color: '#fff' } },
+                            x: { grid: { display: false }, ticks: { color: '#fff' } }
+                        },
+                        plugins: { legend: { labels: { color: '#fff' } } }
+                    }
+                });
+
+            } catch (error) {
+                info.innerHTML = "<b style='color:red;'>HATA: data.csv dosyası deponuzda bulunamadı!</b>";
+                console.error(error);
+            }
         }
     </script>
 </body>
