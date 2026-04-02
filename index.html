@@ -3,198 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melih Yavuk | 4. Hafta Proje Paneli</title>
+    <title>Melih Yavuk | Uzay Portfolyo Paneli</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --accent: #00d2ff;
-            --github-color: #6e5494;
-            --game-color: #f39c12;
-            --data-color: #238636;
-            --card-bg: rgba(22, 27, 34, 0.95);
-            --border: #30363d;
-            --text-main: #f0f6fc;
+            --card-bg: rgba(13, 17, 23, 0.85);
+            --border: rgba(48, 54, 61, 1);
         }
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            color: var(--text-main);
-            background: radial-gradient(circle at center, #1c2531 0%, #0d1117 100%);
-            background-attachment: fixed;
-            overflow-x: hidden;
-            transition: background 0.1s ease;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Segoe UI', sans-serif; color: white;
+            background: #05080a; overflow-x: hidden;
         }
 
-        .container { max-width: 1000px; width: 90%; margin: 50px auto; z-index: 2; position: relative; }
+        /* Uzay Animasyon Alanı */
+        #space-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+        }
+
+        /* Fareyi Takip Eden Parlama (Mekik Efekti) */
+        #glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+            background: radial-gradient(circle at center, rgba(0, 210, 255, 0.08) 0%, transparent 70%);
+        }
+
+        .container {
+            position: relative; z-index: 2; max-width: 900px;
+            margin: 50px auto; padding: 20px;
+        }
 
         header {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
-            margin-bottom: 30px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 25px; padding: 40px; text-align: center;
+            backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(0, 210, 255, 0.1);
         }
 
         .profile-img {
-            width: 130px; height: 130px;
-            border-radius: 50%;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 20px var(--accent);
-            object-fit: cover;
-            transition: 0.4s;
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 3px solid var(--accent); box-shadow: 0 0 20px var(--accent);
+            margin-bottom: 20px; transition: 0.5s; cursor: crosshair;
         }
 
         .profile-img:hover { transform: scale(1.1) rotate(5deg); }
 
-        /* Buton Grubu Stilleri */
-        .button-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
+        .btn-group {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; margin-top: 30px;
         }
 
-        .action-btn {
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+        .btn {
+            padding: 15px; border: none; border-radius: 12px;
+            font-weight: bold; cursor: pointer; color: white;
+            transition: 0.3s; text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
+            text-transform: uppercase; font-size: 0.9rem;
         }
 
-        /* Farklı Buton Renkleri */
-        .btn-github { background: var(--github-color); box-shadow: 0 4px 15px rgba(110, 84, 148, 0.4); }
-        .btn-game { background: var(--game-color); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
-        .btn-data { background: var(--data-color); box-shadow: 0 4px 15px rgba(35, 134, 54, 0.4); }
+        .btn-github { background: #6e5494; box-shadow: 0 4px 15px rgba(110, 84, 148, 0.3); }
+        .btn-game { background: #f39c12; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3); }
+        .btn-data { background: #238636; box-shadow: 0 4px 15px rgba(35, 134, 54, 0.3); }
+        .btn:hover { transform: translateY(-5px); filter: brightness(1.2); }
 
-        .action-btn:hover { transform: translateY(-3px); filter: brightness(1.2); }
-
-        /* İçerik Panelleri */
-        .content-panel {
-            display: none; /* Başlangıçta gizli */
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px;
-            margin-top: 20px;
-            animation: slideIn 0.5s ease-out;
+        .panel {
+            display: none; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 25px; margin-top: 25px;
+            backdrop-filter: blur(15px); animation: fadeIn 0.6s ease;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .chart-container { height: 350px; width: 100%; margin-top: 20px; }
+        .chart-box { height: 350px; width: 100%; margin-top: 20px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; font-size: 0.9rem; }
-        th { background: #161b22; color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(0,0,0,0.3); }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        th { color: var(--accent); background: #0d1117; }
 
-        footer { text-align: center; margin-top: 50px; opacity: 0.4; padding-bottom: 30px; }
+        .error { color: #ff7b72; font-weight: bold; }
     </style>
 </head>
 <body>
+
+    <canvas id="space-canvas"></canvas>
+    <div id="glow"></div>
 
     <div class="container">
         <header>
             <img src="WhatsApp Image 2026-04-01 at 11.55.53.jpeg" alt="Melih Yavuk" class="profile-img">
             <h1>Melih Yavuk</h1>
-            <p class="app-tag">Proje Kontrol Merkezi</p>
-            
-            <div class="button-group">
-                <a href="https://github.com/melihyavuk" target="_blank" class="action-btn btn-github">
-                    🐙 GitHub Profilim
-                </a>
-                
-                <button onclick="showPanel('game-panel')" class="action-btn btn-game">
-                    🎮 Ev Hazırlığı Oyunu
-                </button>
-                
-                <button onclick="showPanel('data-panel')" class="action-btn btn-data">
-                    📊 Veri & Grafikler
-                </button>
+            <p style="color: var(--accent); letter-spacing: 2px;">GEOMETRİK UZAY SİSTEMİ</p>
+
+            <div class="btn-group">
+                <a href="https://github.com/melihyavuk" target="_blank" class="btn btn-github">🐙 GitHub Profilim</a>
+                <button onclick="togglePanel('game-panel')" class="btn btn-game">🎮 Ev Hazırlığı Oyunu</button>
+                <button onclick="loadSystemData()" class="btn btn-data">📊 Veri & Grafikler</button>
             </div>
         </header>
 
-        <div id="game-panel" class="content-panel">
-            <h2>🏠 Ev Hazırlığı Oyunu</h2>
-            <p>Oyun dosyasına gitmek veya oyunu başlatmak için aşağıdaki bağlantıyı kullanabilirsiniz:</p>
-            <a href="ev-hazirligi.html" class="action-btn btn-game" style="width: fit-content;">Oyunu Başlat ➔</a>
+        <div id="game-panel" class="panel">
+            <h2>🏠 Ev Hazırlığı Projesi</h2>
+            <p>Oyun dünyasına giriş yapmak için butona tıklayın:</p>
+            <a href="ev-hazirligi.html" class="btn btn-orange" style="background:#d97706; width:fit-content; padding: 15px 30px;">Oyunu Başlat ➔</a>
         </div>
 
-        <div id="data-panel" class="content-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-                <h2>📊 Veri Analiz Raporu</h2>
-                <button onclick="closePanels()" style="background:none; border:none; color:red; cursor:pointer;">[Kapat]</button>
+        <div id="data-panel" class="panel">
+            <h2>📊 Dinamik Veri Analizi</h2>
+            <div id="status-msg"></div>
+            <div class="chart-box">
+                <canvas id="mainChart"></canvas>
             </div>
-            
-            <div class="chart-container">
-                <canvas id="myChart"></canvas>
-            </div>
-
-            <div style="margin-top: 30px; overflow-x: auto;">
-                <h3>Ham Veri Listesi (CSV)</h3>
-                <div id="table-output">Yükleniyor...</div>
+            <div style="overflow-x: auto;">
+                <h3>Ham Veri Listesi</h3>
+                <div id="table-output"></div>
             </div>
         </div>
-
-        <footer>© 2026 Melih Yavuk | Proje Portfolyosu</footer>
     </div>
 
     <script>
-        // MEKİK EFEKTİ (Arka plan takibi)
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth) * 100;
-            const y = (e.clientY / window.innerHeight) * 100;
-            document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #1c2531 0%, #0d1117 100%)`;
-        });
+        // --- 1. UZAY ARKA PLANI (Geometrik Şekiller) ---
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        let shapes = [];
 
-        // PANEL GÖSTERME FONKSİYONU
-        function showPanel(panelId) {
-            // Önce tüm panelleri kapat
-            closePanels();
-            // İstenen paneli aç
-            const target = document.getElementById(panelId);
-            target.style.display = 'block';
-            target.scrollIntoView({ behavior: 'smooth' });
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
 
-            // Eğer veri paneli açıldıysa CSV'yi çek
-            if(panelId === 'data-panel') {
-                loadCSVData();
+        class Shape {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 15 + 5;
+                this.vX = (Math.random() - 0.5) * 0.6;
+                this.vY = (Math.random() - 0.5) * 0.6;
+                this.type = Math.floor(Math.random() * 3);
+                this.angle = Math.random() * Math.PI * 2;
+                this.rot = (Math.random() - 0.5) * 0.02;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.strokeStyle = "rgba(0, 210, 255, 0.3)";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                if (this.type === 0) ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                else if (this.type === 1) ctx.rect(-this.size/2, -this.size/2, this.size, this.size);
+                else {
+                    ctx.moveTo(0, -this.size);
+                    ctx.lineTo(this.size, this.size);
+                    ctx.lineTo(-this.size, this.size);
+                    ctx.closePath();
+                }
+                ctx.stroke();
+                ctx.restore();
+                this.x += this.vX; this.y += this.vY; this.angle += this.rot;
+                if(this.x < -20 || this.x > canvas.width + 20 || this.y < -20 || this.y > canvas.height + 20) this.init();
             }
         }
 
-        function closePanels() {
-            document.querySelectorAll('.content-panel').forEach(p => p.style.display = 'none');
+        for(let i=0; i<40; i++) shapes.push(new Shape());
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            shapes.forEach(s => s.draw());
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 2. FARE TAKİBİ (Işık Efekti) ---
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('glow');
+            glow.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, rgba(0, 210, 255, 0.15) 0%, transparent 60%)`;
+        });
+
+        // --- 3. PANEL KONTROLÜ VE VERİ ---
+        function togglePanel(id) {
+            document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+            const target = document.getElementById(id);
+            target.style.display = 'block';
+            target.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // CSV VERİSİNİ VE GRAFİĞİ YÜKLEME
-        async function loadCSVData() {
-            const output = document.getElementById('table-output');
+        async function loadSystemData() {
+            togglePanel('data-panel');
+            const status = document.getElementById('status-msg');
+            const tableArea = document.getElementById('table-output');
+            
             const files = ['vori.csv', 'veri.csv'];
-            let content = "";
+            let raw = "";
 
             for (let f of files) {
                 try {
-                    const res = await fetch(f);
-                    if (res.ok) { content = await res.text(); break; }
-                } catch(
+                    const r = await fetch(f);
+                    if (r.ok) { raw = await r.text(); break; }
+                } catch(e) {}
+            }
+
+            if (!raw) {
+                status.innerHTML = "<p class='error'>Sistem Hatası: 'vori.csv' dosyası deponuzda bulunamadı!</p>";
+                return;
+            }
+
+            const rows = raw.trim().split('\n');
+            let table = '<table>';
+            rows.forEach((r, i) => {
+                const c = r.split(',');
+                table += '<tr>' + c.map(v => i === 0 ? `<th>${v}</th>` : `<td>${v}</td>`).join('') + '</tr>';
+            });
+            tableArea.innerHTML = table + '</table>';
+
+            const labels = [], values = [];
+            rows.slice(1).forEach(r => {
+                const c = r.split(',');
+                if(c.length > 1) { labels.push(c[0]); values.push(parseFloat(c[1]) || 0); }
+            });
+
+            const ctxChart = document.getElementById('mainChart').getContext('2d');
+            if (window.myChartObj) window.myChartObj.destroy();
+            window.myChartObj = new Chart(ctxChart, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Analiz Sonuçları',
+                        data: values,
+                        backgroundColor: 'rgba(0, 210, 255, 0.5)',
+                        borderColor: '#00d2ff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: {color: '#fff'} }, x: { ticks: {color: '#fff'} } },
+                    plugins: { legend: { labels: { color: '#fff' } } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
